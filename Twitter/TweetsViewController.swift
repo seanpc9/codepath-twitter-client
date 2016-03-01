@@ -16,7 +16,6 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
         
         tableView.dataSource = self
         tableView.delegate = self
@@ -61,4 +60,30 @@ class TweetsViewController: UIViewController, UITableViewDataSource, UITableView
         return cell
     }
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        var tweet: Tweet
+        
+        if segue.identifier == "TweetToDetails"
+        {
+            let cell = sender as! UITableViewCell
+            let indexPath = tableView.indexPathForCell(cell)
+            tweet = tweets![(indexPath?.row)!]
+            
+            let detailsViewController = segue.destinationViewController as! TweetDetailsViewController
+            detailsViewController.tweet = tweet
+        }
+        
+        if segue.identifier == "ImageToProfile"
+        {
+            let profPic = sender as! UIButton
+            let cell = profPic.superview!.superview as! UITableViewCell
+            
+            let indexPath = tableView.indexPathForCell(cell)
+            tweet = tweets![(indexPath?.row)!]
+            
+            let profileViewController = segue.destinationViewController as? ProfileViewController
+            profileViewController!.tweet = tweet
+        }
+    }
 }
